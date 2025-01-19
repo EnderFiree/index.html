@@ -147,6 +147,11 @@
         // Variabili globali in memoria
         let currentKey = null;
         let creationTime = null;
+        const copyTextarea = document.createElement('textarea');
+        copyTextarea.setAttribute('readonly', '');
+        copyTextarea.style.position = 'absolute';
+        copyTextarea.style.left = '-9999px';
+        document.body.appendChild(copyTextarea);
 
         // Funzione per generare caratteri casuali
         function generateRandomString(length) {
@@ -177,8 +182,7 @@
 
             document.getElementById('currentKey').textContent = currentKey;
             const date = new Date(creationTime);
-            document.getElementById('createdTime').textContent = 
-                Creata il: ${date.toLocaleString('it-IT')};
+            document.getElementById('createdTime').textContent = "Creata il: " + date.toLocaleString('it-IT');
         }
 
         // Aggiornamento del timer
@@ -197,23 +201,16 @@
             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            document.getElementById('timeRemaining').textContent = 
-                ⏳ Scade tra: ${padNumber(hours)}h ${padNumber(minutes)}m ${padNumber(seconds)}s;
+            document.getElementById('timeRemaining').textContent = "⏳ Scade tra: " + padNumber(hours) + padNumber(minutes) + padNumber(seconds);
         }
 
         // Funzione per copiare la key
         function copyKey() {
             if (!currentKey) return;
 
-            const el = document.createElement('textarea');
-            el.value = currentKey;
-            el.setAttribute('readonly', '');
-            el.style.position = 'absolute';
-            el.style.left = '-9999px';
-            document.body.appendChild(el);
-            el.select();
+            copyTextarea.value = currentKey;
+            copyTextarea.select();
             document.execCommand('copy');
-            document.body.removeChild(el);
 
             const message = document.getElementById('copyMessage');
             message.classList.add('show');
